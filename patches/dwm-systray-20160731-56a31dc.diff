@@ -28,9 +28,8 @@ Index: dwm/dwm.c
 ===================================================================
 --- dwm/dwm.c.orig
 +++ dwm/dwm.c
-@@ -58,12 +58,30 @@
+@@ -58,11 +58,29 @@
  #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
- #define ColBorder               2
  
 +#define SYSTEM_TRAY_REQUEST_DOCK    0
 +
@@ -50,8 +49,8 @@ Index: dwm/dwm.c
 +
  /* enums */
  enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
- enum { SchemeNorm, SchemeSel, SchemeLast }; /* color schemes */
- enum { NetSupported, NetWMName, NetWMState,
+ enum { SchemeNorm, SchemeSel }; /* color schemes */
+ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
 +       NetSystemTray, NetSystemTrayOP, NetSystemTrayOrientation, NetSystemTrayOrientationHorz,
         NetWMFullscreen, NetActiveWindow, NetWMWindowType,
         NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
@@ -116,8 +115,8 @@ Index: dwm/dwm.c
 +static void updatesystray(void);
 +static void updatesystrayicongeom(Client *i, int w, int h);
 +static void updatesystrayiconstate(Client *i, XPropertyEvent *ev);
- static void updatewindowtype(Client *c);
  static void updatetitle(Client *c);
+ static void updatewindowtype(Client *c);
  static void updatewmhints(Client *c);
  static void view(const Arg *arg);
  static Client *wintoclient(Window w);
@@ -144,7 +143,7 @@ Index: dwm/dwm.c
 +static Atom wmatom[WMLast], netatom[NetLast], xatom[XLast];
  static int running = 1;
  static Cur *cursor[CurLast];
- static Scm scheme[SchemeLast];
+ static Clr **scheme;
 @@ -481,6 +517,11 @@ cleanup(void)
  	XUngrabKey(dpy, AnyKey, AnyModifier, root);
  	while (mons)
@@ -156,7 +155,7 @@ Index: dwm/dwm.c
 +	}
  	for (i = 0; i < CurLast; i++)
  		drw_cur_free(drw, cursor[i]);
- 	for (i = 0; i < SchemeLast; i++)
+ 	for (i = 0; i < LENGTH(colors); i++)
 @@ -523,9 +564,52 @@ clearurgent(Client *c)
  void
  clientmessage(XEvent *e)
@@ -248,9 +247,9 @@ Index: dwm/dwm.c
  	/* draw status first so it can be overdrawn by tags later */
  	if (m == selmon) { /* status is only drawn on selected monitor */
  		drw_setscheme(drw, scheme[SchemeNorm]);
- 		sw = TEXTW(stext) - lrpad / 2; /* no right padding so status text hugs the corner */
--		drw_text(drw, m->ww - sw, 0, sw, bh, lrpad / 2 - 2, stext, 0);
-+		drw_text(drw, m->ww - sw - stw, 0, sw, bh, lrpad / 2 - 2, stext, 0);
+ 		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
+-		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
++		drw_text(drw, m->ww - sw - stw, 0, sw, bh, 0, stext, 0);
  	}
  
 +	resizebarwin(m);
@@ -300,7 +299,7 @@ Index: dwm/dwm.c
  
 -	if (XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, False, XA_ATOM,
 +	if (XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, False, req,
- 	                      &da, &di, &dl, &dl, &p) == Success && p) {
+ 		&da, &di, &dl, &dl, &p) == Success && p) {
  		atom = *(Atom *)p;
 +		if (da == xatom[XembedInfo] && dl == 2)
 +			atom = ((Atom *)p)[1];
@@ -468,15 +467,15 @@ Index: dwm/dwm.c
  	return exists;
  }
 @@ -1486,7 +1660,7 @@ setfocus(Client *c)
- 		                XA_WINDOW, 32, PropModeReplace,
- 		                (unsigned char *) &(c->win), 1);
+ 			XA_WINDOW, 32, PropModeReplace,
+ 			(unsigned char *) &(c->win), 1);
  	}
 -	sendevent(c, wmatom[WMTakeFocus]);
 +	sendevent(c->win, wmatom[WMTakeFocus], NoEventMask, wmatom[WMTakeFocus], CurrentTime, 0, 0, 0);
  }
  
  void
-@@ -1572,12 +1746,19 @@ setup(void)
+@@ -1572,13 +1746,20 @@ setup(void)
  	wmatom[WMTakeFocus] = XInternAtom(dpy, "WM_TAKE_FOCUS", False);
  	netatom[NetActiveWindow] = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False);
  	netatom[NetSupported] = XInternAtom(dpy, "_NET_SUPPORTED", False);
@@ -486,6 +485,7 @@ Index: dwm/dwm.c
 +	netatom[NetSystemTrayOrientationHorz] = XInternAtom(dpy, "_NET_SYSTEM_TRAY_ORIENTATION_HORZ", False);
  	netatom[NetWMName] = XInternAtom(dpy, "_NET_WM_NAME", False);
  	netatom[NetWMState] = XInternAtom(dpy, "_NET_WM_STATE", False);
+ 	netatom[NetWMCheck] = XInternAtom(dpy, "_NET_SUPPORTING_WM_CHECK", False);
  	netatom[NetWMFullscreen] = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
  	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
  	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
@@ -496,10 +496,11 @@ Index: dwm/dwm.c
  	/* init cursors */
  	cursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
  	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
-@@ -1585,6 +1766,8 @@ setup(void)
+@@ -1585,7 +1766,9 @@ setup(void)
  	/* init appearance */
- 	scheme[SchemeNorm] = drw_scm_create(drw, colors[SchemeNorm], 3);
- 	scheme[SchemeSel] = drw_scm_create(drw, colors[SchemeSel], 3);
+ 	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
+ 	for (i = 0; i < LENGTH(colors); i++)
+ 		scheme[i] = drw_scm_create(drw, colors[i], 3);
 +	/* init system tray */
 +	updatesystray();
  	/* init bars */
@@ -544,7 +545,7 @@ Index: dwm/dwm.c
  	Monitor *m;
  	XSetWindowAttributes wa = {
  		.override_redirect = True,
-@@ -1803,10 +2004,15 @@ updatebars(void)
+@@ -1803,11 +2004,16 @@ updatebars(void)
  	for (m = mons; m; m = m->next) {
  		if (m->barwin)
  			continue;
@@ -553,12 +554,13 @@ Index: dwm/dwm.c
 +		if (showsystray && m == systraytomon(m))
 +			w -= getsystraywidth();
 +		m->barwin = XCreateWindow(dpy, root, m->wx, m->by, w, bh, 0, DefaultDepth(dpy, screen),
- 		                          CopyFromParent, DefaultVisual(dpy, screen),
- 		                          CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
+ 				CopyFromParent, DefaultVisual(dpy, screen),
+ 				CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
  		XDefineCursor(dpy, m->barwin, cursor[CurNormal]->cursor);
 +		if (showsystray && m == systraytomon(m))
 +			XMapRaised(dpy, systray->win);
  		XMapRaised(dpy, m->barwin);
+ 		XSetClassHint(dpy, m->barwin, &ch);
  	}
  }
 @@ -1994,6 +2200,121 @@ updatestatus(void)

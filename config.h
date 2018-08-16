@@ -6,6 +6,10 @@
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
+static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Iosevka Term:hinting=True:antialias=True:size=10" };
@@ -73,7 +77,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", bright_black, "-sb", black, "-sf", bright_yellow, NULL };
 static const char *termcmd[]  = { "termite", NULL };
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "termite", "-t", scratchpadname, "-g", "120x34", NULL };
+static const char *scratchpadcmd[] = { "termite", "-t", scratchpadname, "--geometry", "1800x1200", NULL };
 static const char *dpmscmd[] = { "toggle_dpms.sh", NULL };
 static const char *keymapcmd[] = { "keymap.sh", "toggle", "notify", NULL };
 static const char *lockcmd[] = { "lock.sh", NULL };
