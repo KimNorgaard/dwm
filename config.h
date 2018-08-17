@@ -44,13 +44,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "MPlayer",  NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1,            0,           -1 },
-	{ "HipChat",  NULL,       NULL,       1<<3,         0,           -1 },
-	{ "Termite",  NULL,       "mutt",     1<<1,         0,           -1 },
-	{ "st-256color",  NULL,       "mutt",     1<<1,         0,           -1 },
-	{ "st-256color",  NULL,       "scratchpad",     0,         1,           -1 },
+	/* class          instance    title             tags mask     isfloating   monitor */
+	{ "MPlayer",      NULL,       NULL,             0,            1,           -1 },
+	{ "Firefox",      NULL,       NULL,             1,            0,           -1 },
+	{ "HipChat",      NULL,       NULL,             1<<3,         0,           -1 },
+	{ "Termite",      NULL,       "mutt",           1<<1,         0,           -1 },
+	{ "st-256color",  NULL,       "mutt",           1<<1,         0,           -1 },
+	{ "st-256color",  NULL,       "scratchpad",     0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -83,8 +83,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", bright_black, "-sb", black, "-sf", bright_yellow, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
-// static const char *scratchpadcmd[] = { "termite", "-t", scratchpadname, "--geometry", "1800x1200", "-e", "nvim", NULL };
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", "-e", "nvim", NULL };
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", "-e", "stnvim.sh", NULL };
 static const char *dpmscmd[] = { "toggle_dpms.sh", NULL };
 static const char *keymapcmd[] = { "keymap.sh", "toggle", "notify", NULL };
 static const char *lockcmd[] = { "lock.sh", NULL };
