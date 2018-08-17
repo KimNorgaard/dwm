@@ -47,18 +47,24 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "MPlayer",  NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1,            0,           -1 },
+	{ "HipChat",  NULL,       NULL,       1<<3,         0,           -1 },
+	{ "Termite",  NULL,       "mutt",     1<<1,         0,           -1 },
+	{ "st-256color",  NULL,       "mutt",     1<<1,         0,           -1 },
+	{ "st-256color",  NULL,       "scratchpad",     0,         1,           -1 },
 };
 
 /* layout(s) */
 static const float mfact     = 0.60; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "TTT",      bstack },
+	{ "===",      bstackhoriz },
 };
 
 /* key definitions */
@@ -75,9 +81,10 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", bright_black, "-sb", black, "-sf", bright_yellow, NULL };
-static const char *termcmd[]  = { "termite", NULL };
+static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "termite", "-t", scratchpadname, "--geometry", "1800x1200", NULL };
+// static const char *scratchpadcmd[] = { "termite", "-t", scratchpadname, "--geometry", "1800x1200", "-e", "nvim", NULL };
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", "-e", "nvim", NULL };
 static const char *dpmscmd[] = { "toggle_dpms.sh", NULL };
 static const char *keymapcmd[] = { "keymap.sh", "toggle", "notify", NULL };
 static const char *lockcmd[] = { "lock.sh", NULL };
@@ -92,7 +99,7 @@ static const char *volshowcmd[] = { "volume", NULL };
 static const char *brightupcmd[] = { "sudo", "/etc/acpi/backlight.sh", "+", NULL };
 static const char *brightdowncmd[] = { "sudo", "/etc/acpi/backlight.sh", "-", NULL };
 static const char *dmenucalccmd[] = { "=", "--dmenu=dmenu", NULL };
-static const char *clipmenucmd[] = { "clipmenu", "-i", NULL };
+static const char *clipmenucmd[] = { "clipmenu", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", bright_black, "-sb", black, "-sf", bright_yellow, NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -130,6 +137,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,                      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,                      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,                      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_u,                      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                       XK_o,                      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_space,                  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,                  togglefloating, {0} },
 	{ MODKEY,                       XK_0,                      view,           {.ui = ~0 } },
