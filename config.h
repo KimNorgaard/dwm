@@ -12,8 +12,10 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Iosevka Term:hinting=True:antialias=True:size=10" };
-static const char dmenufont[]       = "Iosevka Term:hinting=True:antialias=True:size=10";
+// static const char *fonts[]          = { "Iosevka Term:hinting=True:antialias=True:size=10" };
+// static const char dmenufont[]       = "Iosevka Term:hinting=True:antialias=True:size=10";
+static const char *fonts[]          = { "monospace:size=12" };
+static const char dmenufont[]       = "monospace:size=12";
 static const char black[]           = "#000000";
 static const char red[]             = "#cc241d";
 static const char green[]           = "#98971a";
@@ -30,10 +32,14 @@ static const char bright_blue[]     = "#83a598";
 static const char bright_magenta[]  = "#d3869b";
 static const char bright_cyan[]     = "#8ec07c";
 static const char bright_white[]    = "#ebdbb2";
+static const char norm_color[] = "#eeeeee";
+static const char blue_bg[] = "#114488";
+static const char blue_fg[] = "#82a9dc";
+static const char blue_fg2[] = "#09346f";
 static const char *colors[][3]      = {
-	/*               fg             bg      border   */
-	[SchemeNorm] = { bright_black,  black,  bright_black },
-	[SchemeSel]  = { bright_yellow, black,  bright_yellow  },
+	/*               fg             bg         border   */
+	[SchemeNorm] = { blue_fg,       blue_bg,   blue_fg2 },
+	[SchemeSel]  = { norm_color,    blue_bg,   blue_fg  },
 };
 
 /* tagging */
