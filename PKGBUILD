@@ -1,4 +1,4 @@
-pkgname=dwm
+pkgname=dwm-kn
 pkgver=6.1
 pkgrel=1
 pkgdesc="My own fork of dwm"
