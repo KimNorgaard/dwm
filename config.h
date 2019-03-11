@@ -36,10 +36,22 @@ static const char norm_color[] = "#eeeeee";
 static const char blue_bg[] = "#114488";
 static const char blue_fg[] = "#82a9dc";
 static const char blue_fg2[] = "#09346f";
+static const char hn_orange_bg[] = "#ff6600";
+static const char hn_beige_fg[] = "#f7f7ef";
+static const char hn_abc[] = "#abcabc";
+static const char col_termgreen[] = "#33FF00";
+static const char col_magenta[] = "#FF79C6";
+static const char col_purple[] = "#BD93F9";
+static const char col_fg[] = "#eeeeee";
+static const char col_bg[] = "#282828";
 static const char *colors[][3]      = {
-	/*               fg             bg         border   */
-	[SchemeNorm] = { blue_fg,       blue_bg,   blue_fg2 },
-	[SchemeSel]  = { norm_color,    blue_bg,   blue_fg  },
+	/*               fg             bg              border   */
+	// [SchemeNorm] = { hn_beige_fg,   hn_orange_bg,   hn_abc },
+	// [SchemeSel]  = { black,         hn_orange_bg,   hn_beige_fg  },
+	[SchemeNorm] = { col_fg,          col_bg,   col_purple },
+	[SchemeSel]  = { col_termgreen,   col_bg,   col_magenta  },
+	// [SchemeNorm] = { blue_fg,       blue_bg,   blue_fg2 },
+	// [SchemeSel]  = { norm_color,    blue_bg,   blue_fg  },
 };
 
 /* tagging */
