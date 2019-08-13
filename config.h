@@ -46,13 +46,14 @@ static const char col_phoenixblue_3[] = "#64B2DB";
 static const char col_magenta[] = "#FF79C6";
 static const char col_purple[] = "#BD93F9";
 static const char col_fg[] = "#eeeeee";
+static const char col_bg_2[] = "#cccccc";
 static const char col_bg[] = "#191919";
 static const char *colors[][3]      = {
 	/*               fg             bg              border   */
 	// [SchemeNorm] = { hn_beige_fg,   hn_orange_bg,   hn_abc },
 	// [SchemeSel]  = { black,         hn_orange_bg,   hn_beige_fg  },
-	[SchemeNorm] = { col_fg,              col_bg,   col_phoenixblue_1 },
-	[SchemeSel]  = { col_phoenixblue_2,   col_bg,   col_phoenixblue_3  },
+	[SchemeNorm] = { col_fg,              col_bg,   col_bg_2 },
+	[SchemeSel]  = { col_phoenixblue_2,   col_bg,   col_phoenixblue_1  },
 	// [SchemeNorm] = { blue_fg,       blue_bg,   blue_fg2 },
 	// [SchemeSel]  = { norm_color,    blue_bg,   blue_fg  },
 };
@@ -101,7 +102,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_bg, "-nf", col_phoenixblue_1, "-sb", col_bg, "-sf", col_phoenixblue_3, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_bg, "-nf", col_bg_2, "-sb", col_bg, "-sf", col_phoenixblue_1, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", "-e", "nvim", NULL };
@@ -120,7 +121,7 @@ static const char *volshowcmd[] = { "volume", NULL };
 static const char *brightupcmd[] = { "sudo", "/etc/acpi/backlight.sh", "+", NULL };
 static const char *brightdowncmd[] = { "sudo", "/etc/acpi/backlight.sh", "-", NULL };
 static const char *dmenucalccmd[] = { "=", "--dmenu=dmenu", NULL };
-static const char *clipmenucmd[] = { "clipmenu", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", col_bg, "-nf", col_phoenixblue_1, "-sb", col_bg, "-sf", col_phoenixblue_3, NULL };
+static const char *clipmenucmd[] = { "clipmenu", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", col_bg, "-nf", col_bg_2, "-sb", col_bg, "-sf", col_phoenixblue_1, NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
