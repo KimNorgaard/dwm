@@ -40,16 +40,19 @@ static const char hn_orange_bg[] = "#ff6600";
 static const char hn_beige_fg[] = "#f7f7ef";
 static const char hn_abc[] = "#abcabc";
 static const char col_termgreen[] = "#33FF00";
+static const char col_phoenixblue_1[] = "#40BDFF";
+static const char col_phoenixblue_2[] = "#5697B8";
+static const char col_phoenixblue_3[] = "#64B2DB";
 static const char col_magenta[] = "#FF79C6";
 static const char col_purple[] = "#BD93F9";
 static const char col_fg[] = "#eeeeee";
-static const char col_bg[] = "#282828";
+static const char col_bg[] = "#191919";
 static const char *colors[][3]      = {
 	/*               fg             bg              border   */
 	// [SchemeNorm] = { hn_beige_fg,   hn_orange_bg,   hn_abc },
 	// [SchemeSel]  = { black,         hn_orange_bg,   hn_beige_fg  },
-	[SchemeNorm] = { col_fg,          col_bg,   col_purple },
-	[SchemeSel]  = { col_termgreen,   col_bg,   col_magenta  },
+	[SchemeNorm] = { col_fg,              col_bg,   col_phoenixblue_1 },
+	[SchemeSel]  = { col_phoenixblue_2,   col_bg,   col_phoenixblue_3  },
 	// [SchemeNorm] = { blue_fg,       blue_bg,   blue_fg2 },
 	// [SchemeSel]  = { norm_color,    blue_bg,   blue_fg  },
 };
@@ -65,10 +68,10 @@ static const Rule rules[] = {
 	/* class          instance    title             tags mask     isfloating   monitor */
 	{ "MPlayer",      NULL,       NULL,             0,            1,           -1 },
 	{ "Firefox",      NULL,       NULL,             1,            0,           -1 },
-	{ "HipChat",      NULL,       NULL,             1<<3,         0,           -1 },
 	{ "Termite",      NULL,       "mutt",           1<<1,         0,           -1 },
 	{ "st-256color",  NULL,       "mutt",           1<<1,         0,           -1 },
 	{ "st-256color",  NULL,       "scratchpad",     0,            1,           -1 },
+        { "Spotify",      NULL,       NULL,             0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -98,7 +101,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", bright_black, "-sb", black, "-sf", bright_yellow, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_bg, "-nf", col_phoenixblue_1, "-sb", col_bg, "-sf", col_phoenixblue_3, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", "-e", "nvim", NULL };
@@ -117,7 +120,7 @@ static const char *volshowcmd[] = { "volume", NULL };
 static const char *brightupcmd[] = { "sudo", "/etc/acpi/backlight.sh", "+", NULL };
 static const char *brightdowncmd[] = { "sudo", "/etc/acpi/backlight.sh", "-", NULL };
 static const char *dmenucalccmd[] = { "=", "--dmenu=dmenu", NULL };
-static const char *clipmenucmd[] = { "clipmenu", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", bright_black, "-sb", black, "-sf", bright_yellow, NULL };
+static const char *clipmenucmd[] = { "clipmenu", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", col_bg, "-nf", col_phoenixblue_1, "-sb", col_bg, "-sf", col_phoenixblue_3, NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */

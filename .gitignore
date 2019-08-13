@@ -1,0 +1,4 @@
+*.o
+pkg/
+dwm
+dwm-*.tar.xz

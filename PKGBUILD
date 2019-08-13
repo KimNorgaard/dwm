@@ -1,6 +1,6 @@
 pkgname=dwm-kn
 pkgver=6.2
-pkgrel=1
+pkgrel=2
 pkgdesc="My own fork of dwm"
 url="https://dwm.suckless.org/"
 arch=('x86_64')
