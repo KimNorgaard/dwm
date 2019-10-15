@@ -72,7 +72,8 @@ static const Rule rules[] = {
 	{ "Termite",      NULL,       "mutt",           1<<1,         0,           -1 },
 	{ "st-256color",  NULL,       "mutt",           1<<1,         0,           -1 },
 	{ "st-256color",  NULL,       "scratchpad",     0,            1,           -1 },
-        { "Spotify",      NULL,       NULL,             0,            1,           -1 },
+	{ "Spotify",      NULL,       NULL,             0,            1,           -1 },
+	{ "Rocket.Chat",  NULL,       NULL,             0,            1,           -1 },
 };
 
 /* layout(s) */
