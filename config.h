@@ -13,9 +13,7 @@ static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 // static const char *fonts[]          = { "Iosevka Term:hinting=True:antialias=True:size=10" };
-// static const char dmenufont[]       = "Iosevka Term:hinting=True:antialias=True:size=10";
-static const char *fonts[]          = { "monospace:size=12" };
-static const char dmenufont[]       = "monospace:size=12";
+static const char *fonts[]          = { "Iosevka:size=12" };
 static const char black[]           = "#000000";
 static const char red[]             = "#cc241d";
 static const char green[]           = "#98971a";
@@ -32,30 +30,23 @@ static const char bright_blue[]     = "#83a598";
 static const char bright_magenta[]  = "#d3869b";
 static const char bright_cyan[]     = "#8ec07c";
 static const char bright_white[]    = "#ebdbb2";
-static const char norm_color[] = "#eeeeee";
-static const char blue_bg[] = "#114488";
-static const char blue_fg[] = "#82a9dc";
-static const char blue_fg2[] = "#09346f";
-static const char hn_orange_bg[] = "#ff6600";
-static const char hn_beige_fg[] = "#f7f7ef";
-static const char hn_abc[] = "#abcabc";
-static const char col_termgreen[] = "#33FF00";
 static const char col_phoenixblue_1[] = "#40BDFF";
 static const char col_phoenixblue_2[] = "#5697B8";
 static const char col_phoenixblue_3[] = "#64B2DB";
-static const char col_magenta[] = "#FF79C6";
-static const char col_purple[] = "#BD93F9";
-static const char col_fg[] = "#eeeeee";
-static const char col_bg_2[] = "#cccccc";
-static const char col_bg[] = "#191919";
+static const char col_ad99ad[] = "#ad99ad";
+static const char col_230023[] = "#230023";
+static const char col_cc00cc[] = "#cc00cc";
+
+static const char col_bg[] = "#230023";
+static const char col_fg[] = "#ad99ad";
+static const char col_sel[] = "#cc00cc";
+
 static const char *colors[][3]      = {
 	/*               fg             bg              border   */
-	// [SchemeNorm] = { hn_beige_fg,   hn_orange_bg,   hn_abc },
-	// [SchemeSel]  = { black,         hn_orange_bg,   hn_beige_fg  },
-	[SchemeNorm] = { col_fg,              col_bg,   col_bg_2 },
-	[SchemeSel]  = { col_phoenixblue_2,   col_bg,   col_phoenixblue_1  },
-	// [SchemeNorm] = { blue_fg,       blue_bg,   blue_fg2 },
-	// [SchemeSel]  = { norm_color,    blue_bg,   blue_fg  },
+	// [SchemeNorm] = { col_fg,              col_bg,   col_sel },
+	// [SchemeSel]  = { col_phoenixblue_2,   col_bg,   col_phoenixblue_1  },
+	[SchemeNorm] = { col_ad99ad,   col_230023,   col_ad99ad },
+	[SchemeSel]  = { col_cc00cc,   col_230023,   col_cc00cc  },
 };
 
 /* tagging */
@@ -70,6 +61,7 @@ static const Rule rules[] = {
 	{ "MPlayer",      NULL,       NULL,             0,            1,           -1 },
 	{ "Firefox",      NULL,       NULL,             1,            0,           -1 },
 	{ "Termite",      NULL,       "mutt",           1<<1,         0,           -1 },
+	{ "Termite",      NULL,       "scratchpad",     0,            1,           -1 },
 	{ "st-256color",  NULL,       "mutt",           1<<1,         0,           -1 },
 	{ "st-256color",  NULL,       "scratchpad",     0,            1,           -1 },
 	{ "Spotify",      NULL,       NULL,             0,            1,           -1 },
@@ -103,10 +95,10 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_bg, "-nf", col_bg_2, "-sb", col_bg, "-sf", col_phoenixblue_1, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
+static const char *termcmd[]  = { "termite", NULL };
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", "-e", "nvim", NULL };
+static const char *scratchpadcmd[] = { "termite", "-t", scratchpadname, "-e", "nvim", NULL };
 static const char *dpmscmd[] = { "toggle_dpms", NULL };
 static const char *keymapcmd[] = { "keymap", "togglenotify", NULL };
 static const char *lockcmd[] = { "lockscreen", NULL };
@@ -122,7 +114,7 @@ static const char *volshowcmd[] = { "volume", NULL };
 static const char *brightupcmd[] = { "sudo", "/etc/acpi/backlight.sh", "+", NULL };
 static const char *brightdowncmd[] = { "sudo", "/etc/acpi/backlight.sh", "-", NULL };
 static const char *dmenucalccmd[] = { "=", "--dmenu=dmenu", NULL };
-static const char *clipmenucmd[] = { "clipmenu", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", col_bg, "-nf", col_bg_2, "-sb", col_bg, "-sf", col_phoenixblue_1, NULL };
+static const char *clipmenucmd[] = { "clipmenu", "-i", "-m", dmenumon, NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
