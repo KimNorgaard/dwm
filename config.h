@@ -41,12 +41,21 @@ static const char col_bg[] = "#230023";
 static const char col_fg[] = "#ad99ad";
 static const char col_sel[] = "#cc00cc";
 
+static const char normbordercolor[] = "#002b36";
+static const char normbgcolor[]     = "#002b36";
+static const char normfgcolor[]     = "#657b83";
+static const char selbordercolor[]  = "#93a1a1";
+static const char selbgcolor[]      = "#93a1a1";
+static const char selfgcolor[]      = "#002b36";
+
 static const char *colors[][3]      = {
 	/*               fg             bg              border   */
 	// [SchemeNorm] = { col_fg,              col_bg,   col_sel },
 	// [SchemeSel]  = { col_phoenixblue_2,   col_bg,   col_phoenixblue_1  },
-	[SchemeNorm] = { col_ad99ad,   col_230023,   col_ad99ad },
-	[SchemeSel]  = { col_cc00cc,   col_230023,   col_cc00cc  },
+	// [SchemeNorm] = { col_ad99ad,   col_230023,   col_ad99ad },
+	// [SchemeSel]  = { col_cc00cc,   col_230023,   col_cc00cc  },
+	[SchemeNorm] = { normfgcolor,   normbgcolor,   normbordercolor },
+	[SchemeSel]  = { selfgcolor,   selbgcolor,   selbordercolor  },
 };
 
 /* tagging */
