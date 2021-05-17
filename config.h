@@ -69,8 +69,8 @@ static const Rule rules[] = {
 	/* class          instance    title             tags mask     isfloating   monitor */
 	{ "MPlayer",      NULL,       NULL,             0,            1,           -1 },
 	{ "Firefox",      NULL,       NULL,             1,            0,           -1 },
-	{ "Termite",      NULL,       "mutt",           1<<1,         0,           -1 },
-	{ "Termite",      NULL,       "scratchpad",     0,            1,           -1 },
+	{ "Alacritty",    NULL,       "mutt",           1<<1,         0,           -1 },
+	{ "Alacritty",    NULL,       "scratchpad",     0,            1,           -1 },
 	{ "st-256color",  NULL,       "mutt",           1<<1,         0,           -1 },
 	{ "st-256color",  NULL,       "scratchpad",     0,            1,           -1 },
 	{ "Spotify",      NULL,       NULL,             0,            1,           -1 },
@@ -105,9 +105,9 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
-static const char *termcmd[]  = { "termite", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "termite", "-t", scratchpadname, "-e", "nvim", NULL };
+static const char *scratchpadcmd[] = { "alacritty", "-t", scratchpadname, "-e", "nvim", NULL };
 static const char *dpmscmd[] = { "toggle_dpms", NULL };
 static const char *keymapcmd[] = { "keymap", "togglenotify", NULL };
 static const char *lockcmd[] = { "lockscreen", NULL };
